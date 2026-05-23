@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pintu Kumar | EHS Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    /* ── DESIGN TOKENS ──────────────── */
+    :root {
+      --bg:     #eef0f4;
+      --paper:  #ffffff;
+      --navy:   #0a1628;
+      --blue:   #1a3a5c;
+      --teal:   #0e7490;
+      --teal2:  #22d3ee;
+      --gold:   #d97706;
+      --pale:   #f0f9ff;
+      --muted:  #64748b;
+      --line:   #e2e8f0;
+      --ink:    #1e293b;
+      --hl:     #ecfeff;
+      --sb:     #0f2033;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--bg);
+      color:var(--ink);
+      display:flex;flex-direction:column;align-items:center;
+      min-height:100vh;padding:32px 16px;
+    }
+
+    /* ATS hidden */
+    .ats{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+    /* ── PAGE ─────────────────────────*/
+    .page{
+      width:210mm;min-height:297mm;
+      background:var(--paper);
+      box-shadow:0 28px 80px rgba(10,22,40,.18),0 4px 18px rgba(10,22,40,.09);
+      display:flex;flex-direction:column;overflow:hidden;
+      animation:rise .65s cubic-bezier(.16,1,.3,1) both;
+    }
+    @keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ── HEADER ───────────────────────*/
+    .header{
+      background:var(--navy);
+      padding:24pt 30pt 18pt;
+      position:relative;overflow:hidden;
+    }
+    .header::before{
+      content:'';position:absolute;
+      right:-20pt;top:-50pt;
+      width:170pt;height:170pt;
+      border:18pt solid rgba(14,116,144,.15);
+      border-radius:50%;
+    }
+    .header::after{
+      content:'';position:absolute;
+      right:50pt;bottom:-20pt;
+      width:80pt;height:80pt;
+      border:8pt solid rgba(217,119,6,.12);
+      border-radius:50%;
+    }
+
+    .htag{
+      font-size:5.5pt;font-weight:700;
+      letter-spacing:.22em;text-transform:uppercase;
+      color:var(--teal2);margin-bottom:5pt;
+    }
+    .hname{
+      font-family:'Playfair Display',serif;
+      font-size:30pt;font-weight:900;
+      color:#fff;letter-spacing:-.01em;line-height:1.1;
+    }
+    .htitle{
+      margin-top:4pt;
+      font-size:7pt;font-weight:600;
+      letter-spacing:.18em;text-transform:uppercase;
+      color:var(--teal2);
+    }
+    .hbar{
+      margin:12pt 0 10pt;height:1.5pt;
+      background:linear-gradient(90deg,var(--teal),var(--gold),transparent);
+    }
+    .hcontacts{display:flex;flex-wrap:wrap;gap:8pt 18pt}
+    .hc{
+      display:flex;align-items:center;gap:5pt;
+      font-size:6.8pt;color:#8fb3cc;
+      font-family:'JetBrains Mono',monospace;
+    }
+    .hc svg{opacity:.6;flex-shrink:0}
+    .hc a{color:inherit;text-decoration:none}
+
+    /* ── BODY GRID ────────────────────*/
+    .body{display:grid;grid-template-columns:178pt 1fr;flex:1}
+
+    /* ── SIDEBAR ──────────────────────*/
+    .sidebar{
+      background:var(--sb);
+      padding:16pt 13pt;
+      display:flex;flex-direction:column;
+    }
+    .sb-sec{
+      padding-bottom:11pt;margin-bottom:11pt;
+      border-bottom:1pt solid rgba(255,255,255,0.07);
+    }
+    .sb-sec:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+
+    .sb-lbl{
+      font-size:5pt;font-weight:700;
+      letter-spacing:.22em;text-transform:uppercase;
+      color:var(--teal2);margin-bottom:7pt;
+      display:flex;align-items:center;gap:5pt;
+    }
+    .sb-lbl::after{
+      content:'';flex:1;height:.8pt;
+      background:rgba(34,211,238,.2);
+    }
+
+    /* Skill bars */
+    .skill{margin-bottom:5.5pt}
+    .skill-name{font-size:6.2pt;font-weight:500;color:#c8dcea;margin-bottom:2pt}
+    .skill-bar{height:3pt;background:rgba(255,255,255,.1);border-radius:2pt;overflow:hidden}
+    .skill-fill{
+      height:100%;
+      background:linear-gradient(90deg,var(--teal),var(--teal2));
+      border-radius:2pt;
+    }
+
+    /* Tag pills */
+    .stags{display:flex;flex-wrap:wrap;gap:3pt}
+    .stag{
+      font-size:5.5pt;font-family:'JetBrains Mono',monospace;
+      color:var(--teal2);
+      background:rgba(14,116,144,.18);
+      border:.5pt solid rgba(34,211,238,.22);
+      border-radius:2pt;padding:2pt 5pt;
+    }
+
+    /* Education */
+    .edu{margin-bottom:8pt}
+    .edu .deg{font-size:6.5pt;font-weight:600;color:#dceaf5;line-height:1.3}
+    .edu .inst{font-size:6pt;color:var(--teal2);margin-top:1pt}
+    .edu .yr{font-size:5.5pt;color:#6e8fa8;font-family:'JetBrains Mono',monospace;margin-top:1pt}
+
+    /* Cert items */
+    .cert{
+      display:flex;align-items:flex-start;gap:5pt;
+      margin-bottom:5pt;
+    }
+    .cert-dot{
+      width:5pt;height:5pt;border-radius:50%;
+      background:var(--gold);flex-shrink:0;margin-top:2pt;
+    }
+    .cert span{font-size:6.2pt;color:#c8dcea;line-height:1.45}
+
+    /* Languages */
+    .lang-row{margin-bottom:6pt}
+    .lang-top{display:flex;justify-content:space-between;margin-bottom:2pt}
+    .lang-name{font-size:6.5pt;color:#dceaf5;font-weight:500}
+    .lang-lvl{font-size:5.5pt;color:#6e8fa8}
+    .lang-bar{height:2.5pt;background:rgba(255,255,255,.1);border-radius:2pt;overflow:hidden}
+    .lang-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--teal2));border-radius:2pt}
+
+    /* Personal */
+    .pd-row{display:flex;justify-content:space-between;margin-bottom:5pt}
+    .pd-lbl{font-size:5pt;text-transform:uppercase;letter-spacing:.09em;color:#6e8fa8}
+    .pd-val{font-size:6.5pt;color:#c8dcea;font-weight:500}
+
+    /* ── MAIN ─────────────────────────*/
+    .main{padding:16pt 18pt 14pt;display:flex;flex-direction:column}
+
+    /* Exp badge */
+    .exp-badge{
+      display:inline-flex;align-items:center;gap:6pt;
+      background:var(--navy);color:#fff;
+      font-size:6pt;font-weight:700;
+      letter-spacing:.12em;text-transform:uppercase;
+      padding:3pt 10pt;border-radius:2pt;
+      margin-bottom:11pt;
+    }
+    .exp-badge span{color:var(--teal2);font-size:9pt;font-weight:900}
+
+    /* Summary */
+    .summary{
+      background:var(--pale);
+      border-left:2.5pt solid var(--teal);
+      padding:7pt 9pt;
+      border-radius:0 3pt 3pt 0;
+      margin-bottom:12pt;
+    }
+    .summary p{font-size:6.8pt;line-height:1.68;color:#0e2033}
+
+    /* Section head */
+    .sec{margin-bottom:11pt}
+    .sec-head{display:flex;align-items:center;gap:7pt;margin-bottom:7pt}
+    .sec-head h2{
+      font-family:'Playfair Display',serif;
+      font-size:10.5pt;font-weight:700;
+      color:var(--navy);white-space:nowrap;
+    }
+    .sh-dot{width:5pt;height:5pt;border-radius:50%;background:var(--gold);flex-shrink:0}
+    .sh-line{flex:1;height:.8pt;background:var(--line)}
+
+    /* Experience card */
+    .xcard{
+      position:relative;
+      padding:7pt 9pt 7pt 11pt;
+      margin-bottom:6pt;
+      border:.8pt solid var(--line);
+      border-radius:3pt;
+      background:#fafdff;
+      transition:box-shadow .2s,transform .2s;
+    }
+    .xcard::before{
+      content:'';position:absolute;
+      left:0;top:10pt;bottom:10pt;
+      width:2.5pt;background:var(--teal);
+      border-radius:0 2pt 2pt 0;
+      opacity:0;transition:opacity .2s;
+    }
+    .xcard:hover::before{opacity:1}
+    .xcard:hover{box-shadow:0 4pt 16pt rgba(14,116,144,.1);transform:translateY(-.5pt)}
+
+    .xtop{
+      display:flex;justify-content:space-between;
+      align-items:flex-start;flex-wrap:wrap;
+      gap:3pt;margin-bottom:2pt;
+    }
+    .xrole{
+      font-size:8.5pt;font-weight:700;color:var(--navy);
+      display:flex;align-items:center;gap:5pt;
+    }
+    .xdur{
+      font-family:'JetBrains Mono',monospace;
+      font-size:5.5pt;color:var(--teal);
+      background:var(--hl);border:.5pt solid rgba(14,116,144,.2);
+      padding:1.5pt 5pt;border-radius:2pt;white-space:nowrap;
+    }
+    .xcmp{font-size:7pt;font-weight:700;color:var(--teal);margin-bottom:1.5pt}
+    .xproj{font-size:6pt;color:var(--muted);font-style:italic;margin-bottom:4pt;line-height:1.35}
+
+    /* Current badge */
+    .now{
+      display:inline-flex;align-items:center;gap:3pt;
+      font-size:5pt;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+      color:#15803d;background:#dcfce7;border:.5pt solid #86efac;
+      border-radius:10pt;padding:1.5pt 5pt;
+    }
+    .now::before{
+      content:'';width:4pt;height:4pt;border-radius:50%;
+      background:#15803d;animation:pulse 1.5s infinite;
+    }
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.75)}}
+
+    /* Bullet list */
+    .blist{
+      list-style:none;
+      display:grid;grid-template-columns:1fr 1fr;
+      gap:2pt 10pt;
+    }
+    .blist.one{grid-template-columns:1fr}
+    .blist li{
+      font-size:6pt;color:#2d3748;
+      line-height:1.5;
+      display:flex;align-items:flex-start;gap:4pt;
+    }
+    .blist li::before{
+      content:'▸';color:var(--teal);
+      font-size:5pt;flex-shrink:0;margin-top:1.5pt;
+    }
+
+    /* Responsibilities grid */
+    .resp-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr 1fr;
+      gap:4pt;
+      margin-top:4pt;
+    }
+    .resp-pill{
+      font-size:5.8pt;
+      background:var(--pale);
+      border:.8pt solid rgba(14,116,144,.18);
+      border-radius:2pt;
+      padding:3pt 6pt;
+      color:var(--blue);
+      font-weight:500;
+      display:flex;align-items:center;gap:4pt;
+    }
+    .resp-pill::before{
+      content:'✔';font-size:5pt;color:var(--teal);
+    }
+
+    /* Footer */
+    .rfooter{
+      margin-top:auto;padding-top:6pt;
+      border-top:.8pt solid var(--line);
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .rfooter .place{font-size:5.5pt;color:var(--muted)}
+    .rfooter .sign{
+      font-family:'Playfair Display',serif;
+      font-size:9pt;color:var(--navy);font-style:italic;
+    }
+
+    /* ── PRINT ────────────────────────*/
+    @media print{
+      @page{size:A4 portrait;margin:0}
+      html,body{width:210mm;height:297mm;overflow:hidden;background:#fff;padding:0;margin:0}
+      body{display:block}
+      .page{width:210mm;height:297mm;min-height:unset;box-shadow:none;animation:none;overflow:hidden}
+      .header,.sidebar,.stag,.summary,.xdur,.now,
+      .skill-fill,.lang-fill,.sh-dot,.exp-badge,.now::before,.resp-pill{
+        -webkit-print-color-adjust:exact;print-color-adjust:exact;
+      }
+      .xcard{break-inside:avoid}
+    }
+
+    /* ── TABLET ───────────────────────*/
+    @media screen and (max-width:820px){
+      body{padding:0}
+      .page{width:100%;min-height:unset;box-shadow:none}
+      .body{grid-template-columns:195px 1fr}
+    }
+
+    /* ── MOBILE ───────────────────────*/
+    @media screen and (max-width:600px){
+      body{padding:0;background:#fff}
+      .page{width:100%;display:flex;flex-direction:column;min-height:unset;box-shadow:none}
+      .body{display:flex;flex-direction:column}
+      .header{padding:16pt 14pt 14pt}
+      .hname{font-size:20pt}
+      .sidebar{background:var(--sb)}
+      .main{padding:14pt}
+      .blist{grid-template-columns:1fr}
+      .blist li,.skill-name{font-size:8.5pt}
+      .xrole{font-size:10pt}
+      .xcmp{font-size:9pt}
+      .sec-head h2{font-size:12pt}
+      .summary p{font-size:8.5pt}
+      .resp-grid{grid-template-columns:1fr 1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ATS Hidden Metadata -->
+<div class="ats" aria-hidden="true">
+  <p>Name: Pintu Kumar</p>
+  <p>Job Title: EHS Manager | HSE Manager | Safety Manager | Environment Health Safety</p>
+  <p>Phone: +91-6204503932</p>
+  <p>Email: pks6197047@gmail.com</p>
+  <p>Location: Khajuria, Gopalganj, Bihar</p>
+  <p>Total Experience: 8 Years in EHS/HSE Safety Management</p>
+  <p>Current Employer: Maruti Suzuki India Pvt. Ltd., Gurugram – Electrical Project Safety Supervisor, January 2023 – Present</p>
+  <p>Skills: EHS Management, HIRA, JSA, Permit to Work, Toolbox Talk, Incident Investigation, Risk Assessment, Fire Safety, Emergency Response, First Aid, PPE Management, BOCW, HSE Reporting, Mock Drill, Electrical Safety, WPS, Confined Space Safety, Height Work Safety</p>
+  <p>Education: B.A. – Bihar University (2020); Diploma in Health Safety and Environment – Delhi College of Fire and Safety Engineering, Mundka (2018); ADCA Computer Certificate – ACI Computer Institute (Grade A, 75.20%)</p>
+  <p>Certifications: Trade Diploma in Health Safety and Environment – BTE Govt. NCT Delhi (951/1200); Assistance of Fire Operator – DCFSE Mundka; Industrial Training – SAIL Bokaro Steel Plant (Excellent Rating)</p>
+</div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="htag">EHS Professional &nbsp;·&nbsp; Manufacturing &amp; Infrastructure</div>
+    <div class="hname">Pintu Kumar</div>
+    <div class="htitle">EHS Manager &nbsp;|&nbsp; 8 Years HSE Experience &nbsp;|&nbsp; Zero-Incident Champion</div>
+    <div class="hbar"></div>
+    <div class="hcontacts">
+      <div class="hc">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.82a19.79 19.79 0 01-3.07-8.68A2 2 0 012 .99h3a2 2 0 012 1.72c.128 1.002.366 1.987.71 2.94a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.15-1.15a2 2 0 012.11-.45c.953.344 1.938.582 2.94.71A2 2 0 0122 16.92z"/></svg>
+        +91-6204503932
+      </div>
+      <div class="hc">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="mailto:pks6197047@gmail.com">pks6197047@gmail.com</a>
+      </div>
+      <div class="hc">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Khajuria, Gopalganj, Bihar
+      </div>
+      <div class="hc">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        8 Years EHS / Safety Management
+      </div>
+    </div>
+  </header>
+
+  <!-- BODY -->
+  <div class="body">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+
+      <div class="sb-sec">
+        <div class="sb-lbl">Core EHS Skills</div>
+        <div class="skill"><div class="skill-name">EHS Management &amp; Leadership</div><div class="skill-bar"><div class="skill-fill" style="width:95%"></div></div></div>
+        <div class="skill"><div class="skill-name">Hazard ID &amp; Risk Assessment (HIRA)</div><div class="skill-bar"><div class="skill-fill" style="width:93%"></div></div></div>
+        <div class="skill"><div class="skill-name">Job Safety Analysis (JSA)</div><div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div></div>
+        <div class="skill"><div class="skill-name">Permit to Work (PTW) System</div><div class="skill-bar"><div class="skill-fill" style="width:92%"></div></div></div>
+        <div class="skill"><div class="skill-name">Incident Investigation &amp; RCA</div><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+        <div class="skill"><div class="skill-name">Electrical &amp; Fire Safety</div><div class="skill-bar"><div class="skill-fill" style="width:90%"></div></div></div>
+        <div class="skill"><div class="skill-name">HSE Reporting &amp; Documentation</div><div class="skill-bar"><div class="skill-fill" style="width:88%"></div></div></div>
+        <div class="skill"><div class="skill-name">Emergency Response &amp; First Aid</div><div class="skill-bar"><div class="skill-fill" style="width:87%"></div></div></div>
+      </div>
+
+      <div class="sb-sec">
+        <div class="sb-lbl">Technical Expertise</div>
+        <div class="stags">
+          <span class="stag">BOCW Act</span>
+          <span class="stag">WPS Management</span>
+          <span class="stag">Confined Space</span>
+          <span class="stag">Height Work Safety</span>
+          <span class="stag">Toolbox Talks</span>
+          <span class="stag">Mock Drills</span>
+          <span class="stag">Safety Audits</span>
+          <span class="stag">Induction Training</span>
+          <span class="stag">PPE Inspection</span>
+          <span class="stag">Hot Work Control</span>
+          <span class="stag">Electrical Safety</span>
+          <span class="stag">MS Office / PPT</span>
+        </div>
+      </div>
+
+      <div class="sb-sec">
+        <div class="sb-lbl">Education</div>
+        <div class="edu">
+          <div class="deg">B.A. — Arts</div>
+          <div class="inst">Bihar University</div>
+          <div class="yr">2020</div>
+        </div>
+        <div class="edu">
+          <div class="deg">Diploma — Health Safety &amp; Environment</div>
+          <div class="inst">Delhi College of Fire &amp; Safety Engineering, Mundka</div>
+          <div class="yr">2017–2018 &nbsp;·&nbsp; 951/1200 marks</div>
+        </div>
+        <div class="edu">
+          <div class="deg">Intermediate (XII) — Science</div>
+          <div class="inst">B.S.E.B, Bihar</div>
+          <div class="yr">2017 &nbsp;·&nbsp; 2nd Division</div>
+        </div>
+        <div class="edu">
+          <div class="deg">Matriculation (X)</div>
+          <div class="inst">B.S.E.B, Bihar</div>
+          <div class="yr">2015 &nbsp;·&nbsp; 1st Division</div>
+        </div>
+      </div>
+
+      <div class="sb-sec">
+        <div class="sb-lbl">Certifications</div>
+        <div class="cert"><div class="cert-dot"></div><span>Trade Diploma in HSE – BTE Govt. NCT Delhi (Exam 2018)</span></div>
+        <div class="cert"><div class="cert-dot"></div><span>Assistance of Fire Operator – DCFSE Mundka</span></div>
+        <div class="cert"><div class="cert-dot"></div><span>Industrial Training – SAIL Bokaro Steel Plant (Excellent Rating)</span></div>
+        <div class="cert"><div class="cert-dot"></div><span>ADCA Computer Certificate – ACI Institute (Grade A, 75.20%)</span></div>
+        <div class="cert"><div class="cert-dot"></div><span>1-Year Firefighting Training – DCFSE College Mundka</span></div>
+      </div>
+
+      <div class="sb-sec">
+        <div class="sb-lbl">Languages</div>
+        <div class="lang-row">
+          <div class="lang-top"><span class="lang-name">Hindi</span><span class="lang-lvl">Native</span></div>
+          <div class="lang-bar"><div class="lang-fill" style="width:100%"></div></div>
+        </div>
+        <div class="lang-row">
+          <div class="lang-top"><span class="lang-name">English</span><span class="lang-lvl">Proficient</span></div>
+          <div class="lang-bar"><div class="lang-fill" style="width:78%"></div></div>
+        </div>
+      </div>
+
+      <div class="sb-sec">
+        <div class="sb-lbl">Personal Details</div>
+        <div class="pd-row"><div class="pd-lbl">Date of Birth</div><div class="pd-val">18 Mar 2000</div></div>
+        <div class="pd-row"><div class="pd-lbl">Gender</div><div class="pd-val">Male</div></div>
+        <div class="pd-row"><div class="pd-lbl">Marital Status</div><div class="pd-val">Unmarried</div></div>
+        <div class="pd-row"><div class="pd-lbl">Nationality</div><div class="pd-val">Indian</div></div>
+        <div class="pd-row"><div class="pd-lbl">Father's Name</div><div class="pd-val">Vijay Prasad</div></div>
+      </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+
+      <div class="exp-badge">
+        <span>8</span> Years Progressive EHS Management Experience
+      </div>
+
+      <!-- Summary -->
+      <div class="summary">
+        <p>Results-driven <strong>EHS Manager with 8 years of hands-on experience</strong> across steel manufacturing, retail facilities, railway infrastructure, city gas distribution, and India's largest automobile manufacturing plant. Proven expertise in developing and implementing comprehensive Environmental Health &amp; Safety management systems in high-risk industrial environments. Demonstrated ability to drive <strong>zero-incident culture</strong> through proactive risk identification, structured safety training programs, and robust permit-to-work systems. Strong background in both <strong>construction-site EHS</strong> and <strong>manufacturing plant safety</strong> management.</p>
+      </div>
+
+      <!-- Experience -->
+      <div class="sec">
+        <div class="sec-head">
+          <div class="sh-dot"></div>
+          <h2>Professional Experience</h2>
+          <div class="sh-line"></div>
+        </div>
+
+        <!-- Maruti Suzuki – Current -->
+        <div class="xcard">
+          <div class="xtop">
+            <div class="xrole">Electrical Project Safety Supervisor <span class="now">Current</span></div>
+            <div class="xdur">Jan 2023 – Present</div>
+          </div>
+          <div class="xcmp">Maruti Suzuki India Pvt. Ltd.</div>
+          <div class="xproj">📍 EMUP-C Department, Gurugram, Haryana &nbsp;·&nbsp; Automobile Manufacturing Plant</div>
+          <ul class="blist one">
+            <li>Managing end-to-end EHS compliance for high-risk electrical project works within India's largest automobile manufacturing facility.</li>
+            <li>Implementing and enforcing Permit to Work (PTW) systems for electrical tasks, hot work, confined space, and elevated work activities.</li>
+            <li>Conducting daily site safety inspections, HIRA, JSA reviews, and toolbox talks to maintain zero-LTI performance.</li>
+            <li>Supervising Lockout/Tagout (LOTO) procedures and electrical isolation protocols across all project activities.</li>
+            <li>Preparing and submitting daily, weekly, and monthly EHS reports and near-miss investigation reports to management.</li>
+            <li>Delivering safety induction and on-the-job safety training to electrical contractors and project workers.</li>
+          </ul>
+        </div>
+
+        <!-- City Gas Distribution -->
+        <div class="xcard">
+          <div class="xtop">
+            <div class="xrole">EHS Officer</div>
+            <div class="xdur">Jul 2021 – Dec 2022</div>
+          </div>
+          <div class="xcmp">City Gas Distribution Project</div>
+          <div class="xproj">📍 Shahjahanpur, Uttar Pradesh / Uttarakhand &nbsp;·&nbsp; Gas Pipeline Infrastructure</div>
+          <ul class="blist">
+            <li>Managed safety compliance for hazardous city gas distribution pipeline laying operations across UP/UK regions.</li>
+            <li>Enforced hot work permits, trench safety, and confined space entry procedures daily.</li>
+            <li>Conducted risk assessments and implemented emergency response plans for gas-related hazards.</li>
+            <li>Delivered toolbox talks on safe excavation, pipeline handling, and gas leak awareness.</li>
+          </ul>
+        </div>
+
+        <!-- GR Infra -->
+        <div class="xcard">
+          <div class="xtop">
+            <div class="xrole">Safety Officer</div>
+            <div class="xdur">2020 – Jun 2021</div>
+          </div>
+          <div class="xcmp">GR Infra Projects</div>
+          <div class="xproj">📍 Railway Project, Gwalior, Madhya Pradesh</div>
+          <ul class="blist">
+            <li>Ensured EHS compliance for railway infrastructure construction including earthworks, RCC, and bridging.</li>
+            <li>Conducted daily safety inspections and issued work permits for high-risk railway project activities.</li>
+            <li>Managed PPE distribution, inspection, and compliance tracking for site workforce.</li>
+            <li>Prepared accident/incident reports and implemented corrective action plans.</li>
+          </ul>
+        </div>
+
+        <!-- Central Mall Patna -->
+        <div class="xcard">
+          <div class="xtop">
+            <div class="xrole">Fire Safety Officer</div>
+            <div class="xdur">2019 – 2020</div>
+          </div>
+          <div class="xcmp">Central Mall, Patna</div>
+          <div class="xproj">📍 Patna, Bihar &nbsp;·&nbsp; Commercial Retail Facility</div>
+          <ul class="blist">
+            <li>Managed fire safety operations for a large commercial retail mall including fire suppression systems.</li>
+            <li>Conducted fire drills, evacuation exercises, and fire safety awareness programs for all staff.</li>
+            <li>Maintained firefighting equipment compliance: extinguishers, hydrants, sprinklers, and fire alarms.</li>
+            <li>Ensured emergency response readiness and liaised with local fire department authorities.</li>
+          </ul>
+        </div>
+
+        <!-- SAIL Bokaro -->
+        <div class="xcard">
+          <div class="xtop">
+            <div class="xrole">Industrial Safety Trainee</div>
+            <div class="xdur">Jun 2018 – Dec 2018</div>
+          </div>
+          <div class="xcmp">SAIL – Bokaro Steel Plant</div>
+          <div class="xproj">📍 Bokaro, Jharkhand &nbsp;·&nbsp; Steel Manufacturing (Rating: Excellent)</div>
+          <ul class="blist">
+            <li>Completed 6-month industrial internship studying fire and safety departments, plant equipment, and safety procedures.</li>
+            <li>Gained hands-on exposure to blast furnace safety, material handling, and heavy industry HSE practices.</li>
+            <li>Awarded <strong>"Excellent"</strong> performance rating by SAIL Bokaro management on completion.</li>
+            <li>Project: Study of Fire &amp; Safety Dept., Works, Equipments &amp; Their Importance in Manufacturing Industries.</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Core Responsibilities -->
+      <div class="sec">
+        <div class="sec-head">
+          <div class="sh-dot"></div>
+          <h2>EHS Management Competencies</h2>
+          <div class="sh-line"></div>
+        </div>
+        <div class="resp-grid">
+          <div class="resp-pill">Daily Safety Inspections</div>
+          <div class="resp-pill">Work Permit Management</div>
+          <div class="resp-pill">HIRA &amp; JSA Execution</div>
+          <div class="resp-pill">Incident Investigation</div>
+          <div class="resp-pill">Toolbox Talks</div>
+          <div class="resp-pill">Mock Drill Coordination</div>
+          <div class="resp-pill">HSE Report Preparation</div>
+          <div class="resp-pill">Safety Induction Training</div>
+          <div class="resp-pill">PPE Inspection &amp; Control</div>
+          <div class="resp-pill">Hazard Identification</div>
+          <div class="resp-pill">Emergency Response Plan</div>
+          <div class="resp-pill">Near-Miss Reporting</div>
+          <div class="resp-pill">WPS Implementation</div>
+          <div class="resp-pill">Environmental Compliance</div>
+          <div class="resp-pill">Safety Motivation Drives</div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="rfooter">
+        <div class="place">📍 Khajuria, Gopalganj, Bihar &nbsp;·&nbsp; I hereby declare the above information is true to the best of my knowledge.</div>
+        <div class="sign">Pintu Kumar</div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  const cards = document.querySelectorAll('.xcard');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e,i) => {
+      if(e.isIntersecting){
+        e.target.style.animation=`cardIn .4s cubic-bezier(.16,1,.3,1) ${i*0.05}s both`;
+        io.unobserve(e.target);
+      }
+    });
+  },{threshold:0.08});
+  cards.forEach(c=>io.observe(c));
+  const s=document.createElement('style');
+  s.textContent=`@keyframes cardIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}`;
+  document.head.appendChild(s);
+</script>
+</body>
+</html>
